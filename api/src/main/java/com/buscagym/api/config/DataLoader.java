@@ -20,6 +20,10 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        if (repository.count() > 0) {
+            return;
+        }
+        
         Academia a1 = new Academia();
         a1.setNome("Iron Fitness Club");
         a1.setCidade("São Paulo");

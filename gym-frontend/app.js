@@ -21,7 +21,6 @@ if (btnLogout) {
   });
 }
 
-// ... (Restante do seu código do app.js continua igual)
 
 const API_URL = "http://localhost:8080/api/academias";
 

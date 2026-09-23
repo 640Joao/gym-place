@@ -20,14 +20,14 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        if (repository.count() > 0) {
-            return;
-        }
-        
+        // 1. Limpa dados anteriores do banco SQLite para evitar repetições
+        repository.deleteAll();
+
+        // 2. Cria as academias e planos com os dados corretos
         Academia a1 = new Academia();
-        a1.setNome("Iron Fitness Club");
-        a1.setCidade("São Paulo");
-        a1.setBairro("Pinheiros");
+        a1.setNome("Smart Fit");
+        a1.setCidade("Brasília");
+        a1.setBairro("108 Sul");
         a1.setEndereco("Rua dos Pinheiros, 1200");
         a1.setNotaAvaliacao(4.9);
         
@@ -53,9 +53,9 @@ public class DataLoader implements CommandLineRunner {
         a1.setPlanos(planos1);
 
         Academia a2 = new Academia();
-        a2.setNome("BioEnergy Academia");
-        a2.setCidade("São Paulo");
-        a2.setBairro("Moema");
+        a2.setNome("Blue Fit");
+        a2.setCidade("Brasília");
+        a2.setBairro("302 Sul");
         a2.setEndereco("Av. Ibirapuera, 540");
         a2.setNotaAvaliacao(4.7);
 
@@ -71,6 +71,7 @@ public class DataLoader implements CommandLineRunner {
         planos2.add(p3);
         a2.setPlanos(planos2);
 
+        // 3. Salva no banco
         repository.save(a1);
         repository.save(a2);
     }

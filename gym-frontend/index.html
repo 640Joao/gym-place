@@ -11,17 +11,17 @@
 
   <header class="navbar">
     <div class="nav-container">
-        <a href="#" class="logo">Gym<span>Place</span></a>
-        <nav class="nav-links">
+      <a href="#" class="logo">Gym<span>Place</span></a>
+      <nav class="nav-links">
         <a href="#busca" id="navBusca">Buscar Academias</a>
         <a href="#comparativo">Planos</a>
         <a href="#suporte">Suporte</a>
-        </nav>
-        <div class="user-actions" style="display: flex; align-items: center; gap: 15px;">
+      </nav>
+      <div class="user-actions" style="display: flex; align-items: center; gap: 15px;">
         <span id="userGreeting" style="font-weight: 600; font-size: 0.9rem; color: var(--text-main);"></span>
         <button class="btn-primary" id="btnOpenModal">Cadastrar Academia</button>
         <button class="btn-logout" id="btnLogout"><i class="fa-solid fa-right-from-bracket"></i> Sair</button>
-        </div>
+      </div>
     </div>
   </header>
 
@@ -100,27 +100,27 @@
       </div>
       <form id="formCadastroAcademia">
         <div class="form-group">
-          <label>Nome da Academia</label>
-          <input type="text" id="cadNome" placeholder="Ex: CrossFit Alpha" required>
+          <label for="cadNome">Nome da Academia</label>
+          <input type="text" id="cadNome" name="nome" placeholder="Ex: CrossFit Alpha" required>
         </div>
         <div class="form-row">
           <div class="form-group">
-            <label>Cidade</label>
-            <input type="text" id="cadCidade" placeholder="Ex: Brasília" required>
+            <label for="cadCidade">Cidade</label>
+            <input type="text" id="cadCidade" name="cidade" placeholder="Ex: Brasília" required>
           </div>
           <div class="form-group">
-            <label>Bairro</label>
-            <input type="text" id="cadBairro" placeholder="Ex: Asa Sul" required>
+            <label for="cadBairro">Bairro</label>
+            <input type="text" id="cadBairro" name="bairro" placeholder="Ex: Asa Sul" required>
           </div>
         </div>
         <div class="form-row">
           <div class="form-group">
-            <label>Nome do Plano</label>
-            <input type="text" id="cadPlanoNome" placeholder="Ex: Plano Anual" required>
+            <label for="cadPlanoNome">Nome do Plano</label>
+            <input type="text" id="cadPlanoNome" name="nomePlano" placeholder="Ex: Plano Anual" required>
           </div>
           <div class="form-group">
-            <label>Valor Mensal (R$)</label>
-            <input type="number" step="0.01" id="cadPreco" placeholder="99.90" required>
+            <label for="cadPreco">Valor Mensal (R$)</label>
+            <input type="number" step="0.01" id="cadPreco" name="precoMensal" placeholder="99.90" required>
           </div>
         </div>
         <button type="submit" class="btn-primary" style="width: 100%; margin-top: 10px;">Salvar Academia</button>

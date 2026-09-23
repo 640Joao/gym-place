@@ -9,6 +9,14 @@
 </head>
 <body class="auth-body">
 
+  <!-- Vídeo de Fundo em Loop e Mudo -->
+  <video autoplay muted loop playsinline class="video-bg">
+    <source src="video-bg.mp4" type="video/mp4">
+  </video>
+
+  <!-- Camada escura para dar contraste e legibilidade -->
+  <div class="video-overlay"></div>
+
   <div class="auth-container">
     <div class="auth-card">
       <div class="auth-logo">
@@ -21,32 +29,53 @@
         <button id="tabRegister" class="tab-btn">Cadastrar</button>
       </div>
 
+      <!-- Formulário de Login -->
       <form id="formLogin" class="auth-form">
         <div class="form-group">
-          <label>E-mail</label>
-          <input type="email" id="loginEmail" placeholder="seu@email.com" required>
+          <label for="loginEmail">E-mail</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-envelope"></i>
+            <input type="email" id="loginEmail" placeholder="seu@email.com" required>
+          </div>
         </div>
         <div class="form-group">
-          <label>Senha</label>
-          <input type="password" id="loginSenha" placeholder="Digite sua senha" required>
+          <label for="loginSenha">Senha</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-lock"></i>
+            <input type="password" id="loginSenha" placeholder="Digite sua senha" required>
+          </div>
         </div>
-        <button type="submit" class="btn-primary auth-submit-btn">Entrar na Plataforma</button>
+        <button type="submit" class="btn-primary auth-submit-btn">
+          Entrar na Plataforma <i class="fa-solid fa-arrow-right"></i>
+        </button>
       </form>
 
+      <!-- Formulário de Cadastro -->
       <form id="formRegister" class="auth-form" style="display: none;">
         <div class="form-group">
-          <label>Nome Completo</label>
-          <input type="text" id="regNome" placeholder="Ex: João Silva" required>
+          <label for="regNome">Nome Completo</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-user"></i>
+            <input type="text" id="regNome" placeholder="Ex: João Silva" required>
+          </div>
         </div>
         <div class="form-group">
-          <label>E-mail</label>
-          <input type="email" id="regEmail" placeholder="seu@email.com" required>
+          <label for="regEmail">E-mail</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-envelope"></i>
+            <input type="email" id="regEmail" placeholder="seu@email.com" required>
+          </div>
         </div>
         <div class="form-group">
-          <label>Senha</label>
-          <input type="password" id="regSenha" placeholder="Crie uma senha" required>
+          <label for="regSenha">Senha</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-lock"></i>
+            <input type="password" id="regSenha" placeholder="Crie uma senha" required>
+          </div>
         </div>
-        <button type="submit" class="btn-primary auth-submit-btn">Criar Minha Conta</button>
+        <button type="submit" class="btn-primary auth-submit-btn">
+          Criar Minha Conta <i class="fa-solid fa-user-plus"></i>
+        </button>
       </form>
 
       <div id="authAlert" class="auth-alert" style="display: none;"></div>

@@ -2,10 +2,8 @@
 const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
 
 if (!usuarioLogado) {
-  // Se não estiver logado, chuta para a tela de login
   window.location.href = "login.html";
 } else {
-  // Exibe o nome do usuário logado
   const userGreeting = document.getElementById("userGreeting");
   if (userGreeting) {
     userGreeting.textContent = `Olá, ${usuarioLogado.nome.split(" ")[0]}!`;
@@ -20,7 +18,6 @@ if (btnLogout) {
     window.location.href = "login.html";
   });
 }
-
 
 const API_URL = "http://localhost:8080/api/academias";
 
@@ -37,14 +34,16 @@ const btnCloseModal = document.getElementById("btnCloseModal");
 const modalCadastrar = document.getElementById("modalCadastrar");
 const formCadastroAcademia = document.getElementById("formCadastroAcademia");
 
-// Clique no link "Buscar Academias" dá foco imediato no campo de texto
-navBusca.addEventListener("click", () => {
-  setTimeout(() => {
-    searchInput.focus();
-  }, 300);
-});
+// Foco no campo de busca
+if (navBusca) {
+  navBusca.addEventListener("click", () => {
+    setTimeout(() => {
+      searchInput.focus();
+    }, 300);
+  });
+}
 
-// Atualiza o texto do filtro de preço
+// Atualiza o texto do filtro de preço e recarrega
 priceFilter.addEventListener("input", (e) => {
   priceValue.textContent = e.target.value;
   carregarAcademias();
@@ -71,10 +70,10 @@ window.addEventListener("click", (e) => {
   }
 });
 
-// Função para buscar dados da API
+// --- BUSCA NA API ---
 async function carregarAcademias() {
   const termo = searchInput.value.trim();
-  const precoMax = priceFilter.value;
+  const precoMax = parseFloat(priceFilter.value);
 
   let url = `${API_URL}/busca?precoMax=${precoMax}`;
   if (termo) {
@@ -86,15 +85,15 @@ async function carregarAcademias() {
     if (!response.ok) throw new Error("Erro ao consultar a API Java");
     
     const academias = await response.json();
-    renderizarCards(academias);
+    renderizarCards(academias, precoMax);
   } catch (error) {
     console.error(error);
     cardsGrid.innerHTML = `<p style="color: #ef4444; grid-column: 1/-1;">Não foi possível carregar as academias. Verifique se o back-end Java está rodando na porta 8080.</p>`;
   }
 }
 
-// Renderização dos cards na tela
-function renderizarCards(academias) {
+// --- RENDERIZAÇÃO DOS CARDS ---
+function renderizarCards(academias, precoMax) {
   cardsGrid.innerHTML = "";
 
   if (!academias || academias.length === 0) {
@@ -102,16 +101,27 @@ function renderizarCards(academias) {
     return;
   }
 
+  let totalCardsRenderizados = 0;
+
   academias.forEach((academia) => {
     if (!academia.planos || academia.planos.length === 0) return;
 
-    academia.planos.forEach((plano) => {
+    // Filtra para exibir apenas os planos dentro do preço máximo selecionado
+    const planosValidos = academia.planos.filter(
+      (plano) => Number(plano.precoMensal) <= Number(precoMax)
+    );
+
+    planosValidos.forEach((plano) => {
+      totalCardsRenderizados++;
       const card = document.createElement("div");
       card.className = `card-plano ${plano.destaque ? "destaque" : ""}`;
 
       const tagDestaque = plano.destaque 
         ? `<div class="badge-vantagem">O mais vantajoso</div>` 
         : "";
+
+      const valorFormatado = Number(plano.precoMensal).toFixed(2).replace(".", ",");
+      const urlGoogleMaps = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(academia.nome + " " + academia.bairro + " " + academia.cidade)}`;
 
       card.innerHTML = `
         ${tagDestaque}
@@ -120,7 +130,7 @@ function renderizarCards(academias) {
         
         <div class="card-preco">
           <span class="label-partir">A partir de</span>
-          <div class="valor">R$ ${plano.precoMensal.toFixed(2).replace(".", ",")} <span style="font-size: 0.9rem; font-weight: normal;">/mês</span></div>
+          <div class="valor">R$ ${valorFormatado} <span style="font-size: 0.9rem; font-weight: normal;">/mês</span></div>
           <small>${plano.fidelidade || "Sem fidelidade"}</small>
         </div>
 
@@ -129,11 +139,69 @@ function renderizarCards(academias) {
           <li><i class="fa-solid fa-star" style="color: #eab308;"></i> Avaliação: ${academia.notaAvaliacao || 5.0} / 5.0</li>
         </ul>
 
-        <button class="card-btn" onclick="alert('Redirecionando para detalhes de: ${academia.nome}')">Ver Academia</button>
+        <button class="card-btn" onclick="window.open('${urlGoogleMaps}', '_blank')">Ver Academia</button>
       `;
 
       cardsGrid.appendChild(card);
     });
+  });
+
+  if (totalCardsRenderizados === 0) {
+    cardsGrid.innerHTML = "<p style='grid-column: 1/-1; color: var(--text-muted);'>Nenhum plano encontrado abaixo dessa faixa de preço.</p>";
+  }
+}
+
+// --- CADASTRO DE NOVA ACADEMIA VIA MODAL ---
+if (formCadastroAcademia) {
+  formCadastroAcademia.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const nome = document.getElementById("cadNome").value;
+    const cidade = document.getElementById("cadCidade").value;
+    const bairro = document.getElementById("cadBairro").value;
+    const planoNome = document.getElementById("cadPlanoNome").value;
+    const preco = parseFloat(document.getElementById("cadPreco").value);
+
+    const novaAcademia = {
+      nome: nome,
+      cidade: cidade,
+      bairro: bairro,
+      endereco: `${bairro}, ${cidade}`,
+      notaAvaliacao: 5.0,
+      planos: [
+        {
+          nomePlano: planoNome,
+          precoMensal: preco,
+          fidelidade: "Sem fidelidade",
+          beneficios: "Acesso completo aos equipamentos e aulas",
+          destaque: false
+        }
+      ]
+    };
+
+    try {
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(novaAcademia),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Erro na API: ${response.status}`);
+      }
+
+      alert("Academia cadastrada com sucesso!");
+      formCadastroAcademia.reset();
+      modalCadastrar.style.display = "none";
+
+      // Atualiza os dados na tela em tempo real
+      carregarAcademias();
+    } catch (err) {
+      console.error(err);
+      alert("Erro ao cadastrar academia. Certifique-se de que o backend está ativo.");
+    }
   });
 }
 

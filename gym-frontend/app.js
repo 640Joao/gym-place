@@ -19,6 +19,32 @@ if (btnLogout) {
   });
 }
 
+// --- CONTROLE DO MENU HAMBÚRGUER ---
+const menuToggle = document.getElementById("menuToggle");
+const navCollapse = document.getElementById("navCollapse");
+
+if (menuToggle && navCollapse) {
+  menuToggle.addEventListener("click", () => {
+    navCollapse.classList.toggle("active");
+    const icon = menuToggle.querySelector("i");
+    if (icon) {
+      icon.classList.toggle("fa-bars");
+      icon.classList.toggle("fa-xmark");
+    }
+  });
+
+  navCollapse.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      navCollapse.classList.remove("active");
+      const icon = menuToggle.querySelector("i");
+      if (icon) {
+        icon.classList.add("fa-bars");
+        icon.classList.remove("fa-xmark");
+      }
+    });
+  });
+}
+
 const API_URL = "http://localhost:8080/api/academias";
 
 const searchInput = document.getElementById("searchInput");
@@ -34,7 +60,6 @@ const btnCloseModal = document.getElementById("btnCloseModal");
 const modalCadastrar = document.getElementById("modalCadastrar");
 const formCadastroAcademia = document.getElementById("formCadastroAcademia");
 
-// Foco no campo de busca
 if (navBusca) {
   navBusca.addEventListener("click", () => {
     setTimeout(() => {
@@ -43,21 +68,21 @@ if (navBusca) {
   });
 }
 
-// Atualiza o texto do filtro de preço e recarrega
 priceFilter.addEventListener("input", (e) => {
   priceValue.textContent = e.target.value;
   carregarAcademias();
 });
 
-// Eventos de Busca
 searchBtn.addEventListener("click", carregarAcademias);
 searchInput.addEventListener("keypress", (e) => {
   if (e.key === "Enter") carregarAcademias();
 });
 
-// Abrir e fechar Modal
 btnOpenModal.addEventListener("click", () => {
   modalCadastrar.style.display = "flex";
+  if (navCollapse && navCollapse.classList.contains("active")) {
+    navCollapse.classList.remove("active");
+  }
 });
 
 btnCloseModal.addEventListener("click", () => {
@@ -106,7 +131,6 @@ function renderizarCards(academias, precoMax) {
   academias.forEach((academia) => {
     if (!academia.planos || academia.planos.length === 0) return;
 
-    // Filtra para exibir apenas os planos dentro do preço máximo selecionado
     const planosValidos = academia.planos.filter(
       (plano) => Number(plano.precoMensal) <= Number(precoMax)
     );
@@ -188,15 +212,11 @@ if (formCadastroAcademia) {
         body: JSON.stringify(novaAcademia),
       });
 
-      if (!response.ok) {
-        throw new Error(`Erro na API: ${response.status}`);
-      }
+      if (!response.ok) throw new Error(`Erro na API: ${response.status}`);
 
       alert("Academia cadastrada com sucesso!");
       formCadastroAcademia.reset();
       modalCadastrar.style.display = "none";
-
-      // Atualiza os dados na tela em tempo real
       carregarAcademias();
     } catch (err) {
       console.error(err);
@@ -205,5 +225,4 @@ if (formCadastroAcademia) {
   });
 }
 
-// Carga inicial
 document.addEventListener("DOMContentLoaded", carregarAcademias);

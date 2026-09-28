@@ -12,15 +12,24 @@
   <header class="navbar">
     <div class="nav-container">
       <a href="#" class="logo">Gym<span>Place</span></a>
-      <nav class="nav-links">
-        <a href="#busca" id="navBusca">Buscar Academias</a>
-        <a href="#comparativo">Planos</a>
-        <a href="#suporte">Suporte</a>
-      </nav>
-      <div class="user-actions" style="display: flex; align-items: center; gap: 15px;">
-        <span id="userGreeting" style="font-weight: 600; font-size: 0.9rem; color: var(--text-main);"></span>
-        <button class="btn-primary" id="btnOpenModal">Cadastrar Academia</button>
-        <button class="btn-logout" id="btnLogout"><i class="fa-solid fa-right-from-bracket"></i> Sair</button>
+
+      <!-- Botão Hambúrguer Mobile -->
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir Menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+
+      <!-- Conteúdo Colapsável -->
+      <div class="nav-collapse" id="navCollapse">
+        <nav class="nav-links">
+          <a href="#busca" id="navBusca">Buscar Academias</a>
+          <a href="#comparativo">Planos</a>
+          <a href="#suporte">Suporte</a>
+        </nav>
+        <div class="user-actions">
+          <span id="userGreeting"></span>
+          <button class="btn-primary" id="btnOpenModal">Cadastrar Academia</button>
+          <button class="btn-logout" id="btnLogout"><i class="fa-solid fa-right-from-bracket"></i> Sair</button>
+        </div>
       </div>
     </div>
   </header>

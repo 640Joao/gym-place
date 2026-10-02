@@ -778,3 +778,48 @@ body {
   border: 1px solid #10b981;
   color: #6ee7b7;
 }
+
+/* Divisor e Botão de Visitante na Tela de Login */
+.guest-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 18px 0 12px;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.guest-divider::before,
+.guest-divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.guest-divider span {
+  padding: 0 10px;
+  text-transform: lowercase;
+}
+
+/* Botão em formato de texto limpo (Sem bordas ou caixas) */
+.btn-guest {
+  background: none;
+  border: none;
+  outline: none;
+  padding: 0;
+  margin: 20px auto 0;
+  display: block;
+  color: var(--primary-color);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+.btn-guest:hover {
+  color: var(--primary-hover);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-shadow: 0 0 10px rgba(168, 85, 247, 0.6);
+}

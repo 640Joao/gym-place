@@ -95,4 +95,23 @@ formRegister.addEventListener("submit", async (e) => {
   } catch (err) {
     mostrarAlerta("Não foi possível conectar ao servidor Java.", "erro");
   }
+  
+  
 });
+
+// --- ENTRAR COMO VISITANTE (SEM LOGIN) ---
+const btnGuest = document.getElementById("btnGuest");
+
+if (btnGuest) {
+  btnGuest.addEventListener("click", () => {
+    // Guarda uma sessão fictícia para não ser bloqueado pelo app.js
+    const visitante = {
+      nome: "Visitante",
+      email: "visitante@gymplace.com",
+      isGuest: true
+    };
+    
+    localStorage.setItem("usuarioLogado", JSON.stringify(visitante));
+    window.location.href = "index.html";
+  });
+}
